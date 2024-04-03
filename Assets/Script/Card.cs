@@ -22,7 +22,6 @@ namespace CardMatchingGame
     {
         public Sprite cardBack;
         public Sprite cardFront;
-        public int cardId;
         public CardSuit cardSuit;
 
         private bool _isFlipped = false;
@@ -61,16 +60,6 @@ namespace CardMatchingGame
                     cardImage.sprite = cardBack;
                 });
             }
-        }
-
-        public bool IsFlipped()
-        {
-            return _isFlipped;
-        }
-
-        public int GetCardId()
-        {
-            return cardId;
         }
 
         public void FlipCard(Action callback = null)
