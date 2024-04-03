@@ -4,34 +4,48 @@ using UnityEngine;
 
 namespace CardMatchingGame
 {
+    using System;
     using UnityEngine;
+    using UnityEngine.UI;
+
+    public enum CardSuit
+    {
+        Ace,
+        Club,
+        Diamond,
+        Heart,
+        WeirdClavar
+    }
+
 
     public class Card : MonoBehaviour
     {
-        public GameObject cardBack;
+        public Sprite cardBack;
+        public Sprite cardFront;
         public int cardId;
+        public CardSuit cardSuit;
 
         private bool _isFlipped = false;
+        private Image cardImage;
         public float flipSpeed = 1f;
+
+        private void Start()
+        {
+            cardImage = GetComponent<Image>();
+        }
 
         public void OnCardClicked()
         {
             if (!_isFlipped)
             {
-                FlipCard();
+                FlipCard(()=> { cardImage.sprite = cardFront; });
             }
-        }
-
-        public void SetCard(int id, Sprite cardFace)
-        {
-            cardId = id;
-            GetComponent<SpriteRenderer>().sprite = cardFace;
         }
 
         public void ResetCard()
         {
             _isFlipped = false;
-            cardBack.SetActive(true);
+            FlipCard(()=> { cardImage.sprite = cardBack; });
             // Add animation or sound effect for resetting here
         }
 
@@ -45,12 +59,12 @@ namespace CardMatchingGame
             return cardId;
         }
 
-        public void FlipCard()
+        public void FlipCard(Action callback = null)
         {
-            StartCoroutine(FlipRoutine());
+            StartCoroutine(FlipRoutine(callback));
         }
 
-        private IEnumerator FlipRoutine()
+        private IEnumerator FlipRoutine(Action callback)
         {
             bool isShowingFront = true;
             float time = 0f;
@@ -69,6 +83,7 @@ namespace CardMatchingGame
                 yield return null;
             }
 
+            callback?.Invoke();
             // Ensure the final rotation is correct
             transform.eulerAngles = endRotation;
         }
