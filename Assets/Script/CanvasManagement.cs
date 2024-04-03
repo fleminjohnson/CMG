@@ -12,6 +12,12 @@ namespace CardMatchingGame
         [SerializeField] private TMP_Text turnCountText;
         [SerializeField] private TMP_Text matchCountText;
 
+        private void Start()
+        {
+            SetTurnCount(0);
+            SetMatchCount(0);
+        }
+
         public void PlayGame(int difficulty)
         {
             mainMenuCanvas.SetActive(false);
