@@ -16,15 +16,17 @@ namespace CardMatchingGame
         {
             SetTurnCount(0);
             SetMatchCount(0);
+
+            MainMenu();
         }
 
-        public void PlayGame(int difficulty)
+        public void PlayGame()
         {
             mainMenuCanvas.SetActive(false);
             gameCanvas.SetActive(true);
         }
 
-        public void ExitGame()
+        public void MainMenu()
         {
             mainMenuCanvas.SetActive(true);
             gameCanvas.SetActive(false);
@@ -39,6 +41,5 @@ namespace CardMatchingGame
         {
             matchCountText.text = matchCount.ToString();
         }
-
     }
 }

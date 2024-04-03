@@ -26,6 +26,7 @@ namespace CardMatchingGame
         private bool _isFlipped = false;
         private Image cardImage;
         private float maxRotation = 180;
+        private GamePlayManager gamePlayManager;
 
         public CardSuit CardSuit { get => cardSuit; set => cardSuit = value; }
 
@@ -33,6 +34,7 @@ namespace CardMatchingGame
         private void Start()
         {
             cardImage = GetComponent<Image>();
+            gamePlayManager = transform.parent.GetComponent<GamePlayManager>();
         }
 
         // Called when the card is clicked
@@ -44,7 +46,7 @@ namespace CardMatchingGame
                 FlipCard(() =>
                 {
                     cardImage.sprite = cardFront;
-                    GamePlayManager.Instance.AddCardToList(this);
+                    gamePlayManager.AddCardToList(this);
                     FlipScale();
                 });
             }
