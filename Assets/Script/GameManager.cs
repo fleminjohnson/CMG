@@ -14,7 +14,7 @@ namespace CardMatchingGame
         private int matchCount = 0;
         private int totalCellCount;
         private int currentActiveLevelCount = 0;
-        private Transform currentActiveLevel = null;
+        private GameObject currentActiveLevel = null;
 
         public int TotalCellCount { get => totalCellCount; set => totalCellCount = value; }
 
@@ -26,12 +26,17 @@ namespace CardMatchingGame
 
         public void LoadNextLevel()
         {
-            if(currentActiveLevelCount <= levelPrefabList.Count)
+            if(currentActiveLevelCount <= levelPrefabList.Count-1)
             {
                 if(currentActiveLevelCount > 0 & currentActiveLevel != null)
                     Destroy(currentActiveLevel);
 
-                currentActiveLevel = Instantiate(levelPrefabList[currentActiveLevelCount], gameplayCanvas);
+                turnCount = 0;
+                matchCount = 0;
+                canvasManagement.SetMatchCount(matchCount);
+                canvasManagement.SetTurnCount(turnCount);
+
+                currentActiveLevel = Instantiate(levelPrefabList[currentActiveLevelCount], gameplayCanvas).gameObject;
                 currentActiveLevelCount++;
             }
             else

@@ -38,6 +38,7 @@ namespace CardMatchingGame
 
         private void CheckCards()
         {
+            GameManager.Instance.TurnCount();
             if (cardList.Count >= maxCount)
             {
                 if (cardList[0].CardSuit == cardList[1].CardSuit)
@@ -54,7 +55,6 @@ namespace CardMatchingGame
                     cardList[1].ResetCard();
                 }
                 cardList.Clear();
-                GameManager.Instance.TurnCount();
             }
         }
     }
