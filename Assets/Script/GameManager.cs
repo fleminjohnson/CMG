@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace CardMatchingGame
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : SingletonBehaviour<GameManager>
     {
         private List<Card> cardList = new List<Card>();
+        private int maxCount = 2;
 
         // Start is called before the first frame update
         void Start()
@@ -14,20 +15,10 @@ namespace CardMatchingGame
 
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            // Example usage
-            if (cardList.Count == 2)
-            {
-                CheckCards();
-            }
-        }
-
         public void AddCardToList(Card card)
         {
             cardList.Add(card);
-            if (cardList.Count == 2)
+            if (cardList.Count == maxCount)
             {
                 CheckCards();
             }
@@ -46,17 +37,19 @@ namespace CardMatchingGame
 
         private void CheckCards()
         {
-            if (cardList.Count >= 2)
+            if (cardList.Count >= maxCount)
             {
                 if (cardList[0].cardSuit == cardList[1].cardSuit)
                 {
                     Debug.Log("Found match");
-                    cardList.Clear();
                 }
                 else
                 {
                     Debug.Log("Reset");
+                    cardList[0].ResetCard();
+                    cardList[1].ResetCard();
                 }
+                cardList.Clear();
             }
         }
     }
