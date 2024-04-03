@@ -44,8 +44,21 @@ namespace CardMatchingGame
                 {
                     cardImage.sprite = cardFront;
                     GameManager.Instance.AddCardToList(this);
+                    // Flip the sprite by multiplying the x component of localScale by -1
+                    transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
                 });
             }
+        }
+
+        public void SetDestroy()
+        {
+            StartCoroutine(DelayedDestroy(0.5f));
+        }
+
+        IEnumerator DelayedDestroy(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(gameObject);
         }
 
         public void ResetCard()
@@ -73,6 +86,8 @@ namespace CardMatchingGame
             float time = 0f;
             Vector3 startRotation = transform.eulerAngles;
             Vector3 endRotation = startRotation + new Vector3(0, maxRotation, 0);
+            bool isFirst = true;
+
             if(startRotation.y != 0)
             {
                 endRotation = Vector3.zero;
@@ -82,8 +97,12 @@ namespace CardMatchingGame
                 time += Time.deltaTime * flipSpeed;
                 transform.eulerAngles = Vector3.Lerp(startRotation, endRotation, time);
                 yield return null;
+                if(time >= 0.5f & isFirst)
+                {
+                    isFirst = false;
+                    callback?.Invoke();
+                }
             }
-            callback?.Invoke();
             transform.eulerAngles = endRotation; // Ensure the final rotation is correct
         }
     }

@@ -42,6 +42,8 @@ namespace CardMatchingGame
                 if (cardList[0].cardSuit == cardList[1].cardSuit)
                 {
                     Debug.Log("Found match");
+                    cardList[0].SetDestroy();
+                    cardList[1].SetDestroy();
                 }
                 else
                 {
