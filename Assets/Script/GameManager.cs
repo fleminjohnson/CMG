@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CardMatchingGame
@@ -7,42 +5,31 @@ namespace CardMatchingGame
     public class GameManager : SingletonBehaviour<GameManager>
     {
         [SerializeField] private CanvasManagement canvasManagement;
-        [SerializeField] private List<Transform> levelPrefabList;
-        [SerializeField] private Transform gameplayCanvas;
+        [SerializeField] private LevelManager levelManager;
 
         private int turnCount = 0;
         private int matchCount = 0;
         private int totalCellCount;
-        private int currentActiveLevelCount = 0;
-        private GameObject currentActiveLevel = null;
 
-        public int TotalCellCount { get => totalCellCount; set => totalCellCount = value; }
+        public int TotalCellCount
+        {
+            get => totalCellCount;
+            set
+            {
+                totalCellCount = value;
+                SetTotalCellCount();
+            }
+        }
+
+        private void SetTotalCellCount()
+        {
+            canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
+        }
 
         public void PlayGame()
         {
             canvasManagement.PlayGame();
-            LoadNextLevel();
-        }
-
-        public void LoadNextLevel()
-        {
-            if(currentActiveLevelCount <= levelPrefabList.Count-1)
-            {
-                if(currentActiveLevelCount > 0 & currentActiveLevel != null)
-                    Destroy(currentActiveLevel);
-
-                turnCount = 0;
-                matchCount = 0;
-                canvasManagement.SetMatchCount(matchCount);
-                canvasManagement.SetTurnCount(turnCount);
-
-                currentActiveLevel = Instantiate(levelPrefabList[currentActiveLevelCount], gameplayCanvas).gameObject;
-                currentActiveLevelCount++;
-            }
-            else
-            {
-                Debug.Log("Level is larger than in LevelList");
-            }
+            levelManager.LoadNextLevel();
         }
 
         public void MatchFound()
@@ -50,16 +37,25 @@ namespace CardMatchingGame
             matchCount++;
             canvasManagement.SetMatchCount(matchCount);
 
-            if(matchCount == (totalCellCount / 2))
+            if (matchCount == (totalCellCount / 2))
             {
-                LoadNextLevel();
+                matchCount = 0;
+                turnCount = 0;
+                levelManager.LoadNextLevel();
             }
+            canvasManagement.SetMatchCount(matchCount);
+            canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
         }
 
         public void TurnCount()
         {
             turnCount++;
-            canvasManagement.SetTurnCount(turnCount);
+            canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
+
+            if (turnCount == totalCellCount / 2)
+            {
+                Debug.Log("Level Over");
+            }
         }
     }
 }

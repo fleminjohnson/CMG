@@ -14,9 +14,6 @@ namespace CardMatchingGame
 
         private void Start()
         {
-            SetTurnCount(0);
-            SetMatchCount(0);
-
             MainMenu();
         }
 
@@ -32,9 +29,9 @@ namespace CardMatchingGame
             gameCanvas.SetActive(false);
         }
 
-        public void SetTurnCount(int turnCount)
+        public void SetTurnCount(int turnCount, int totalTurnCount)
         {
-            turnCountText.text = turnCount.ToString();
+            turnCountText.text = $"{turnCount} / {totalTurnCount}";
         }
 
         public void SetMatchCount(int matchCount)
