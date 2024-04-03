@@ -27,7 +27,9 @@ namespace CardMatchingGame
 
         private bool _isFlipped = false;
         private Image cardImage;
+        private float maxRotation = 180;
         public float flipSpeed = 1f;
+
 
         private void Start()
         {
@@ -38,15 +40,27 @@ namespace CardMatchingGame
         {
             if (!_isFlipped)
             {
-                FlipCard(()=> { cardImage.sprite = cardFront; });
+                _isFlipped = true;
+                FlipCard(() =>
+                {
+                    cardImage.sprite = cardFront;
+                    GameManager.Instance.AddCardToList(this);
+                });
             }
         }
 
         public void ResetCard()
         {
-            _isFlipped = false;
-            FlipCard(()=> { cardImage.sprite = cardBack; });
-            // Add animation or sound effect for resetting here
+            Debug.Log("Reset card");
+            if (_isFlipped) // Only reset if the card is flipped
+            {
+                _isFlipped = false;
+                FlipCard(() =>
+                {
+                    Debug.Log("Callback done");
+                    cardImage.sprite = cardBack;
+                });
+            }
         }
 
         public bool IsFlipped()
@@ -61,31 +75,27 @@ namespace CardMatchingGame
 
         public void FlipCard(Action callback = null)
         {
+            Debug.Log("Flip card");
             StartCoroutine(FlipRoutine(callback));
         }
 
         private IEnumerator FlipRoutine(Action callback)
         {
-            bool isShowingFront = true;
             float time = 0f;
             Vector3 startRotation = transform.eulerAngles;
-            Vector3 endRotation = startRotation + new Vector3(0, 180, 0);
-
-            while (time < 1f)
+            Vector3 endRotation = startRotation + new Vector3(0, maxRotation, 0);
+            if(startRotation.y != 0)
             {
+                endRotation = Vector3.zero;
+            }
+            while (time < 1)
+            { 
                 time += Time.deltaTime * flipSpeed;
                 transform.eulerAngles = Vector3.Lerp(startRotation, endRotation, time);
-                if (time >= 0.5f && isShowingFront)
-                {
-                    // Switch the card face here if needed
-                    isShowingFront = false;
-                }
                 yield return null;
             }
-
             callback?.Invoke();
-            // Ensure the final rotation is correct
-            transform.eulerAngles = endRotation;
+            transform.eulerAngles = endRotation; // Ensure the final rotation is correct
         }
     }
 
