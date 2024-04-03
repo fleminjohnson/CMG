@@ -56,4 +56,9 @@ public class FlexibleGridLayout : LayoutGroup
     {
         //throw new System.NotImplementedException();
     }
+
+    public int GetCellCount()
+    {
+        return rows * columns;
+    }
 }

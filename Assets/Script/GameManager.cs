@@ -12,8 +12,11 @@ namespace CardMatchingGame
 
         private int turnCount = 0;
         private int matchCount = 0;
+        private int totalCellCount;
         private int currentActiveLevelCount = 0;
         private Transform currentActiveLevel = null;
+
+        public int TotalCellCount { get => totalCellCount; set => totalCellCount = value; }
 
         public void PlayGame()
         {
@@ -41,6 +44,11 @@ namespace CardMatchingGame
         {
             matchCount++;
             canvasManagement.SetMatchCount(matchCount);
+
+            if(matchCount == (totalCellCount / 2))
+            {
+                LoadNextLevel();
+            }
         }
 
         public void TurnCount()

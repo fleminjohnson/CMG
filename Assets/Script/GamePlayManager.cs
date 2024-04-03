@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace CardMatchingGame
 {
-    public class GamePlayManager : SingletonBehaviour<GamePlayManager>
+    public class GamePlayManager : MonoBehaviour
     {
+        [SerializeField] private FlexibleGridLayout flexibleGridLayout;
+
         private List<Card> cardList = new List<Card>();
         private int maxCount = 2;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-
+            GameManager.Instance.TotalCellCount = flexibleGridLayout.GetCellCount();
         }
 
         public void AddCardToList(Card card)
