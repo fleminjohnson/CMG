@@ -44,18 +44,8 @@ namespace CardMatchingGame
 
         public void RestartLevel(Action callback = null)
         {
-            Debug.Log("Restart level");
-            Destroy(currentActiveLevel);
-            currentActiveLevelCount--;
-            currentActiveLevel = Instantiate(levelPrefabList[currentActiveLevelCount], gameplayCanvas).gameObject;
-
-            StartCoroutine(DelayedCallback(1, callback));
-        }
-
-        IEnumerator DelayedCallback(int delay, Action callback)
-        {
-            yield return new WaitForSeconds(delay);
-            callback?.Invoke();
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.buildIndex);
         }
     }
 }

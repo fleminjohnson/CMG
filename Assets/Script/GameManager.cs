@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace CardMatchingGame
@@ -16,6 +17,7 @@ namespace CardMatchingGame
         private int turnCount = 0;
         private int matchCount = 0;
         private int totalCellCount;
+        private bool isLost = false;
 
         public int TotalCellCount
         {
@@ -30,6 +32,8 @@ namespace CardMatchingGame
 
         private void Start()
         {
+            EventServices.Instance.OnWinning += OnWinningCallBack;
+
             if (SaveLoadManager.KeyExist(GameConstants.CurrentActiveLevel))
             {
                 int currentIndex = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
@@ -39,6 +43,11 @@ namespace CardMatchingGame
             {
                 levelManager.LoadGamePlayPrefab(0);
             }
+        }
+
+        private void OnWinningCallBack()
+        {
+            canvasManagement.OnWinning();
         }
 
         private void SetTotalCellCount()
@@ -62,7 +71,7 @@ namespace CardMatchingGame
 
             canvasManagement.SetMatchCount(matchCount);
 
-            if (matchCount == (totalCellCount / 2))
+            if (matchCount == (totalCellCount / 2) & !isLost)
             {
                 Debug.Log("All matches found, loading next level.");
                 ResetUIValues();
@@ -80,8 +89,21 @@ namespace CardMatchingGame
             if (turnCount > totalCellCount / 2)
             {
                 Debug.Log("Max turns exceeded, restarting level.");
-                levelManager.RestartLevel(()=> { ResetUIValues(); });
+                isLost = true;
+                canvasManagement.OnLose();
             }
         }
+
+        public void RestartButton()
+        {
+            levelManager.RestartLevel(() => { ResetUIValues(); });
+        }
+
+        private void OnDisable()
+        {
+            EventServices.Instance.OnWinning -= OnWinningCallBack;
+        }
+
+       
     }
 }
