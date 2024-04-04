@@ -15,7 +15,6 @@ namespace CardMatchingGame
             if (instance == null)
             {
                 instance = (T)this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {

@@ -38,19 +38,17 @@ namespace CardMatchingGame
 
         private void CheckCards()
         {
-            GameManager.Instance.TurnCount();
+            GameManager.Instance.IncrementTurnCount();
             if (cardList.Count >= maxCount)
             {
                 if (cardList[0].CardSuit == cardList[1].CardSuit)
                 {
-                    Debug.Log("Found match");
                     cardList[0].SetDestroy();
                     cardList[1].SetDestroy();
-                    GameManager.Instance.MatchFound();
+                    GameManager.Instance.IncrementMatchFound();
                 }
                 else
                 {
-                    Debug.Log("Reset");
                     cardList[0].ResetCard();
                     cardList[1].ResetCard();
                 }

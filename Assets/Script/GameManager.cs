@@ -2,6 +2,12 @@ using UnityEngine;
 
 namespace CardMatchingGame
 {
+    public enum GameState
+    {
+        MainMenu,
+        GamePlay
+    }
+
     public class GameManager : SingletonBehaviour<GameManager>
     {
         [SerializeField] private CanvasManagement canvasManagement;
@@ -18,43 +24,64 @@ namespace CardMatchingGame
             {
                 totalCellCount = value;
                 SetTotalCellCount();
+                Debug.Log($"TotalCellCount set to {totalCellCount}");
+            }
+        }
+
+        private void Start()
+        {
+            var x = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
+            if (SaveLoadManager.KeyExist(GameConstants.CurrentActiveLevel))
+            {
+                int currentIndex = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
+                levelManager.LoadGamePlayPrefab(currentIndex);
+            }
+            else
+            {
+                levelManager.LoadGamePlayPrefab(0);
             }
         }
 
         private void SetTotalCellCount()
         {
             canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
+            Debug.Log("Updated turn count on UI.");
         }
 
-        public void PlayGame()
+        private void ResetUIValues()
         {
-            canvasManagement.PlayGame();
-            levelManager.LoadNextLevel();
+            matchCount = 0;
+            turnCount = 0;
+            canvasManagement.SetMatchCount(matchCount);
+            canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
         }
 
-        public void MatchFound()
+        public void IncrementMatchFound()
         {
             matchCount++;
+            Debug.Log($"Match found. Total matches: {matchCount}.");
+
             canvasManagement.SetMatchCount(matchCount);
 
             if (matchCount == (totalCellCount / 2))
             {
-                matchCount = 0;
-                turnCount = 0;
-                levelManager.LoadNextLevel();
+                Debug.Log("All matches found, loading next level.");
+                ResetUIValues();
+                levelManager.SaveCurrentScene();
             }
-            canvasManagement.SetMatchCount(matchCount);
-            canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
         }
 
-        public void TurnCount()
+        public void IncrementTurnCount()
         {
             turnCount++;
+            Debug.Log($"Turn incremented. Total turns: {turnCount}.");
+
             canvasManagement.SetTurnCount(turnCount, totalCellCount / 2);
 
-            if (turnCount == totalCellCount / 2)
+            if (turnCount > totalCellCount / 2)
             {
-                Debug.Log("Level Over");
+                Debug.Log("Max turns exceeded, restarting level.");
+                levelManager.RestartLevel(()=> { ResetUIValues(); });
             }
         }
     }
