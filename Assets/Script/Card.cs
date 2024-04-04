@@ -75,6 +75,7 @@ namespace CardMatchingGame
         // Initiates the card flipping animation
         public void FlipCard(Action callback = null)
         {
+            AudioManager.Instance.PlaySoundOneShot(GameConstants.CardFlipped);
             StartCoroutine(FlipRoutine(callback));
         }
 

@@ -70,6 +70,7 @@ namespace CardMatchingGame
             Debug.Log($"Match found. Total matches: {matchCount}.");
 
             canvasManagement.SetMatchCount(matchCount);
+            AudioManager.Instance.PlaySoundOneShot(GameConstants.Matching);
 
             if (matchCount == (totalCellCount / 2) & !isLost)
             {
@@ -89,9 +90,10 @@ namespace CardMatchingGame
 
             if (turnCount > totalCellCount / 2)
             {
-                Debug.Log("Max turns exceeded, restarting level.");
+                Debug.Log("Max turns exceeded");
                 isLost = true;
                 canvasManagement.OnLose();
+                AudioManager.Instance.PlaySoundOneShot(GameConstants.GameOver);
             }
         }
 
