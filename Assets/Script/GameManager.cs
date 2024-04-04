@@ -73,9 +73,10 @@ namespace CardMatchingGame
 
             if (matchCount == (totalCellCount / 2) & !isLost)
             {
+                SaveLoadManager.SaveInt(GameConstants.TotalMatches, matchCount + SaveLoadManager.LoadInt(GameConstants.TotalMatches));
                 Debug.Log("All matches found, loading next level.");
                 ResetUIValues();
-                levelManager.SaveCurrentScene();
+                levelManager.SaveCurrentSceneanLoadNext();
             }
         }
 

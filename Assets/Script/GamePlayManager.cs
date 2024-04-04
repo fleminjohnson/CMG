@@ -51,6 +51,7 @@ namespace CardMatchingGame
                 {
                     cardList[0].ResetCard();
                     cardList[1].ResetCard();
+                    SaveLoadManager.SaveInt(GameConstants.TotalMismatches, 1 + SaveLoadManager.LoadInt(GameConstants.TotalMismatches));
                 }
                 cardList.Clear();
             }

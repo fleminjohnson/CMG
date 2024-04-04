@@ -14,7 +14,7 @@ namespace CardMatchingGame
         private int currentActiveLevelCount = 0;
         private GameObject currentActiveLevel = null;
 
-        public void SaveCurrentScene()
+        public void SaveCurrentSceneanLoadNext()
         {
             Debug.Log("Current active level " + currentActiveLevelCount);
 
