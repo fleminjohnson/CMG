@@ -17,15 +17,15 @@ namespace CardMatchingGame
         public void SaveCurrentScene()
         {
             Debug.Log("Current active level " + currentActiveLevelCount);
-            if (currentActiveLevelCount <= levelPrefabList.Count - 1)
-            {
-                if (SaveLoadManager.KeyExist(GameConstants.CurrentActiveLevel))
-                {
-                    currentActiveLevelCount = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
-                }
 
-                currentActiveLevelCount++;
-                currentActiveLevelCount = Mathf.Clamp(currentActiveLevelCount, 0, levelPrefabList.Count-1);
+            if (SaveLoadManager.KeyExist(GameConstants.CurrentActiveLevel))
+            {
+                currentActiveLevelCount = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
+            }
+
+            currentActiveLevelCount++;
+            if(currentActiveLevelCount < levelPrefabList.Count)
+            {
                 SaveLoadManager.SaveInt(GameConstants.CurrentActiveLevel, currentActiveLevelCount);
 
                 Scene currentScene = SceneManager.GetActiveScene();
@@ -33,7 +33,7 @@ namespace CardMatchingGame
             }
             else
             {
-                Debug.Log("Level is larger than in LevelList");
+                EventServices.Instance.InvokeOnWinning();
             }
         }
 

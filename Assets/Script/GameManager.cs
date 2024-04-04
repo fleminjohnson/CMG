@@ -30,7 +30,6 @@ namespace CardMatchingGame
 
         private void Start()
         {
-            var x = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
             if (SaveLoadManager.KeyExist(GameConstants.CurrentActiveLevel))
             {
                 int currentIndex = SaveLoadManager.LoadInt(GameConstants.CurrentActiveLevel);
