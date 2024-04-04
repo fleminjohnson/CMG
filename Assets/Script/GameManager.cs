@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CardMatchingGame
 {
@@ -79,6 +80,11 @@ namespace CardMatchingGame
                 ResetUIValues();
                 levelManager.SaveCurrentSceneanLoadNext();
             }
+        }
+
+        public void MainMenuButton()
+        {
+            SceneManager.LoadSceneAsync(0);
         }
 
         public void IncrementTurnCount()
