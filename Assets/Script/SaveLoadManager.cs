@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CardMatchingGame
+namespace CMG
 {
 
     public class SaveLoadManager : MonoBehaviour

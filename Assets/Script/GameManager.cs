@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CardMatchingGame
+namespace CMG
 {
     public enum GameState
     {

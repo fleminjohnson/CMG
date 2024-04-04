@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CardMatchingGame
+namespace CMG
 {
     public class GamePlayManager : MonoBehaviour
     {

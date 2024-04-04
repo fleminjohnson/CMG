@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace CardMatchingGame
+namespace CMG
 {
     public class EventServices : SingletonBehaviour<EventServices>
     {

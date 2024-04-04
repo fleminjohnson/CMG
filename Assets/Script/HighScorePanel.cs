@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace CardMatchingGame
+namespace CMG
 {
     public class HighScorePanel : MonoBehaviour
     {

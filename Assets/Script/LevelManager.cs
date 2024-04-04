@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-namespace CardMatchingGame
+namespace CMG
 {
     public class LevelManager : MonoBehaviour
     {
